@@ -7,4 +7,4 @@ class Deck:
         # Initialize full deck (all 52 cards)
 
 
-    # Draw card
+    # Draw card and remove it
