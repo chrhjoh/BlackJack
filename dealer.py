@@ -2,19 +2,23 @@
 
 class Dealer:
 
-    def __init__(self, name):
+    def __init__(self):
         self.cards = []
-        self.name = name
+        self.total = 0
+        self.no_aces = 0
     
 
     def deal(self, deck, players):
-        self.cards.append(deck.draw_cards())
+        self.hit(deck)
         for player in players:
-            player.hand.append(deck.draw_cards())     
-            player.open_cards.append(deck.draw_cards())
+            player.hit(deck)
+            player.hit(deck)
 
     def hit(self, deck):
-        self.open_cards.append(deck.draw_cards())
+        card = deck.draw_cards()
+        self.open_cards.append(card)
+        if card.val == 11:
+            self.no_aces += 1
 
 
     # Print Cards

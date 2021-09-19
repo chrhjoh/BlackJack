@@ -7,7 +7,9 @@ class Card:
 
 
     def __init__(self, value, suit):
-        if value < 10:
+        if value == 1:
+            self.val = 11
+        elif  1 < value < 10:
             self.val = value
         else:
             self.val = 10
