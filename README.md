@@ -4,4 +4,6 @@ This is an implementation of blackjack in order to train classes and git from cm
 
 ## Thoughts
 
-* Should also create a dealer class, perhaps inheri
+
+* Needs implementation of scoring of cards
+* Needs implementation of menu controlling everything (blackjack.py)
