@@ -43,10 +43,8 @@ class Player:
             while self.total > 21 and self.no_aces > 0:
                 self.total -= 10
                 self.no_aces -= 1
-            if self.total > 21:
-                return "Bust"
-            else:
-                return self.total
+                
+            return self.total
 
     
 
