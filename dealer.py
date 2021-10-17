@@ -3,9 +3,10 @@
 class Dealer:
 
     def __init__(self):
-        self.cards = []
+        self.hand = []
         self.total = 0
         self.no_aces = 0
+        self.status = 'Playing'
     
 
     def deal(self, deck, players):
@@ -16,9 +17,18 @@ class Dealer:
 
     def hit(self, deck):
         card = deck.draw_cards()
-        self.open_cards.append(card)
+        self.hand.append(card)
         if card.val == 11:
             self.no_aces += 1
+        self.total += card.val
+    
+    def check_score(self):
+
+        while self.total > 21 and self.no_aces > 0:
+            self.total -= 10
+            self.no_aces -= 1
+            
+        return self.total
 
 
     # Print Cards

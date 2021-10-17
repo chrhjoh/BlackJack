@@ -4,10 +4,11 @@ from table import Table
 
 def ask_for_input():
     inpt = input("What do you want to do: \nh: Hit \ns: Stand \n")
-    while inpt.lower() != "h" or inpt.lower() != "s":
+    while (inpt.lower() != "h") and (inpt.lower() != "s"):
         inpt = input("Not accepted input, please give input: \nh: Hit \ns: Stand \n")
     
     return inpt
+
 
 def main():
     print("Welcome to Blackjack")
@@ -27,7 +28,7 @@ def main():
         table = Table(players)
         table.new_game()
         table.show_cards()
-        
+
         # Actual game loop
         for player in table.players:
             print(f"{player.name}'s turn")
@@ -36,31 +37,53 @@ def main():
             score = player.check_score()
 
             while player.status == 'Playing':
-            
+                inpt = ask_for_input()
 
                 if inpt == 'h':
-                    player.hit()
+                    player.hit(table.deck)
                     score = player.check_score()
-
                     if score > 21:
+                        player.show_hand()
                         print('You are bust sorry')
                         player.status = 'Lost'
-                    elif
-                
-            
+                    else:
+                        player.show_hand()
+                elif inpt == 's':
+                    player.status = 'Stand'
 
 
+        # After all players make dealers moves
+        print("Dealer's turn:")
+        table.dealer.show_hand()
+        while table.dealer.status == 'Playing':
+            table.dealer.hit(table.deck)
+            table.dealer.show_hand()
+            score = table.dealer.check_score()
+            if score > 21:
+                table.dealer.status = 'Lost'
+                print('Dealer is bust')
+            elif score > 17 and table.dealer.no_aces == 0:
+                table.dealer.status = 'Stand'
+        
+        for player in table.players:
+            if table.dealer.status == 'Lost' and player.status == 'Stand':
+                player.money += 2 * player.wager
+                print(player.name, 'Won!')
+            elif table.dealer.status == 'Stand' and player.status == 'Stand' and player.total > table.dealer.total:
+                player.money += 2 * player.wager
+                print(player.name,  'Won!')
+            else:
+                print(player.name, 'Lost!')
+
+        table.show_money()
+        inpt = input('Do you want to stop enter (q)')
+
+        if inpt == 'q':
+            playing = False
 
     
+    print('Thanks for playing!')
 
-
-
-
-
-
-
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
- 
+

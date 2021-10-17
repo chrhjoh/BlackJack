@@ -21,8 +21,8 @@ class Deck:
 
 
     # Draw card and remove it
-    def draw_cards(self, amount):
-        return [self.cards.pop(0) for _ in range(amount)]
+    def draw_cards(self):
+        return self.cards.pop(0)
 
 
 
