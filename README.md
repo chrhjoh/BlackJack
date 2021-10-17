@@ -5,5 +5,4 @@ This is an implementation of blackjack in order to train classes and git from cm
 ## Thoughts
 
 
-* Needs implementation of scoring of cards
-* Needs implementation of menu controlling everything (blackjack.py)
+* Actual implementation for detecting Black jack is not implemented, because i am lazy
