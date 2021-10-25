@@ -1,6 +1,7 @@
-# Should contain the logic that makes the game run
+# Contains logic for making game run. Could perhaps be split into game loop and a console
 from player import Player
 from table import Table
+
 
 def ask_for_input():
     inpt = input("What do you want to do: \nh: Hit \ns: Stand \n")
@@ -27,46 +28,62 @@ def main():
     while playing:
         table = Table(players)
         table.new_game()
-        table.show_cards()
+        print('######## DEALERS DRAW ########')
+        table.dealer.show_hand()
+        print()
 
         # Actual game loop
         for player in table.players:
-            print(f"{player.name}'s turn")
+            print(f"######## {player.name.upper()}'S TURN ########")
             player.show_hand()
             player.make_wager()
-            score = player.check_score()
+            player.hit(table.deck)
+            player.show_hand()
+            player.check_blackjack()
+            if player.status == 'Blackjack':
+                print('Congratulations you have blackjack')
 
             while player.status == 'Playing':
                 inpt = ask_for_input()
 
                 if inpt == 'h':
                     player.hit(table.deck)
-                    score = player.check_score()
-                    if score > 21:
+                    if player.total > 21:
                         player.show_hand()
                         print('You are bust sorry')
                         player.status = 'Lost'
+                   
                     else:
                         player.show_hand()
                 elif inpt == 's':
-                    player.status = 'Stand'
+                    player.stand()
 
 
         # After all players make dealers moves
-        print("Dealer's turn:")
+        print("######## DEALERS TURN ########")
         table.dealer.show_hand()
+        table.dealer.hit(table.deck)
+        table.dealer.check_blackjack()
+        table.dealer.show_hand()
+        if table.dealer.status == 'Blackjack':
+            print('Dealer has blackjack')
+
         while table.dealer.status == 'Playing':
             table.dealer.hit(table.deck)
             table.dealer.show_hand()
-            score = table.dealer.check_score()
-            if score > 21:
+            if table.dealer.total > 21:
                 table.dealer.status = 'Lost'
                 print('Dealer is bust')
-            elif score > 17 and table.dealer.no_aces == 0:
-                table.dealer.status = 'Stand'
+            elif table.dealer.total > 17 and table.dealer.no_aces == 0:
+                table.dealer.stand()
         
+        print('######## STATUS AFTER ROUND ########')
         for player in table.players:
-            if table.dealer.status == 'Lost' and player.status == 'Stand':
+            if table.dealer.status == 'Blackjack':
+                print(player.name, 'Lost!')
+            elif player.status == 'Blackjack':
+                print(player.name, 'Won!')
+            elif table.dealer.status == 'Lost' and player.status == 'Stand':
                 player.money += 2 * player.wager
                 print(player.name, 'Won!')
             elif table.dealer.status == 'Stand' and player.status == 'Stand' and player.total > table.dealer.total:
@@ -78,8 +95,12 @@ def main():
         table.show_money()
         inpt = input('Do you want to stop enter (q)')
 
-        if inpt == 'q':
+        if inpt == 'q' or len(table.players) == 0:
             playing = False
+        else:
+            print()
+            print('######## NEW GAME ########')
+            print()
 
     
     print('Thanks for playing!')

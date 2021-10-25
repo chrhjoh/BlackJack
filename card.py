@@ -16,10 +16,17 @@ class Card:
         self.suit = suit
         self.val_name = self.name_dict[value]
 
+        self.n_value = value # Used for hash
+
     
     def __repr__(self):
         return f"{self.val_name} of {self.suit}"
+    
+    def __hash__(self) -> int:
+        return self.n_value
 
+    def __eq__(self, other) -> bool:
+        return self.n_value == other.n_value and self.suit == other.suit
 
 
 if __name__ == "__main__":

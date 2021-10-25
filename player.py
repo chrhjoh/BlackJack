@@ -1,17 +1,13 @@
-import random
-from deck import Deck
+from card import Card
+from blackjakker import BlackJakker
 
+class Player(BlackJakker):
 
-class Player:
-
-    def __init__(self, name, money = 1000):
+    def __init__(self, name : str, money = 1000):
+        BlackJakker.__init__(self)
         # Init with 2 cards
         self.name = name
-        self.hand = []
-        self.total = 0
         self.money = money
-        self.status = "Playing" # Indicates whether player won
-        self.no_aces = 0
 
     def make_wager(self):
         amount = int(input("Make Wager: "))
@@ -21,30 +17,18 @@ class Player:
         self.wager = amount
         return amount
     
-    def hit(self, deck):
-        card = deck.draw_cards()
-        self.hand.append(card)
-        if card.val == 11:
-            self.no_aces += 1
-        self.total += card.val
-        
-    def stand(self):
-        self.status = "Stopped"
-
-    # Print Cards
-    def show_hand(self):
-        print("Cards on hand: ", self.hand)
-    
-    def check_score(self):
-        while self.total > 21 and self.no_aces > 0:
-            self.total -= 10
-            self.no_aces -= 1
-                
-        return self.total
-
-    
 
 if __name__ == "__main__":
-    chrib = Player()
-    deck = Deck()
+    chrib = Player('chrib')
     chrib.show_hand()
+    chrib.hand.add(Card(11, 'Clubs'))
+    chrib.hand.add(Card(1, 'Clubs'))
+    chrib.calc_score()
+    chrib.check_blackjack()
+    print(chrib.status)
+    chrib = Player('test')
+    chrib.hand.add(Card(11, 'Hearts'))
+    chrib.hand.add(Card(1, 'Hearts'))
+    chrib.calc_score()
+    chrib.check_blackjack()
+    print(chrib.status)

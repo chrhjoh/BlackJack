@@ -8,7 +8,6 @@ class Deck:
         self.make_deck()
         self.shuffle()
         
-
     # Initialize full deck (all 52 cards)
     def make_deck(self):
         self.suits = ["Clubs", "Spades", "Hearts", "Diamonds"]

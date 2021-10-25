@@ -1,9 +1,10 @@
 # Should contain the stuff such as cards on tables and wager and so on
 from dealer import Dealer
 from deck import Deck
+from player import Player
 class Table:
     
-    def __init__(self, players):
+    def __init__(self, players :'list[Player]'):
         self.players = players
         self.dealer = Dealer()
 
@@ -15,17 +16,9 @@ class Table:
                 player.money += 2 * player.wager
     
 
-    def show_cards(self):
-        for player in self.players:
-            print(player.name+' cards:')
-            player.show_hand()
-            print('')
-        print('Dealer cards:')
-        self.dealer.show_hand()
-
     def show_money(self):
         print()
-        print('Amount of money after round')
+        print('######## MONEY AFTER ROUND ########')
         for player in self.players:
             print(player.name)
             print('Total:', player.money)
@@ -36,7 +29,7 @@ class Table:
                 print(f"{player.name} does not have enough money to continue")
                 self.players.remove(player)
             else:
-                player.hand = []
+                player.hand = set()
                 player.status = "Playing"
         self.deck = Deck()
         self.dealer.deal(self.deck, self.players)
